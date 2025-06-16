@@ -5,15 +5,29 @@ var PORT    = 3000;
 var express = require('express');
 
 var app     = express();
-var utils   = require('./mysql-connector');
+//var utils   = require('./mysql-connector');
+
+//const { aw1db}=require('./bd/aw1db.js');
+
+
+
+
+
 
 // to parse application/json
 app.use(express.json()); 
+const rutasDevice = require( './rutas/routesDevice.js')
+//ruta
+app.use(rutasDevice);
 // to serve static files
 app.use(express.static('/home/node/app/static/'));
 
-//=======[ Main module code ]==================================================
+//rutas
 
+
+
+//=======[ Main module code ]==================================================
+/*
 app.get('/devices/', function(req, res, next) {
     utils.query("SELECT * FROM Devices",function(error,respuesta,campos){
         if(error==null){
@@ -25,6 +39,7 @@ app.get('/devices/', function(req, res, next) {
         }
     })
 });
+
 app.get('/devices/:id', function(req, res, next) {
     utils.query("SELECT * FROM Devices where id = "+req.params.id, function(error,respuesta,campos){
         if(error==null){
@@ -55,7 +70,7 @@ app.post('/algoInfoBody/',function(req,res,next){
         res.status(409).send({error:"Falta el nombre"});
     }
 });
-
+*/
 app.listen(PORT, function(req, res) {
     console.log("NodeJS API running correctly");
 });
