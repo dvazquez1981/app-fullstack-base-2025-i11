@@ -55,7 +55,7 @@ class Main implements EventListenerObject{
                     for (let o of devices) {
                         
                         listado += "<li class='collection-item avatar'>"
-                        if (o.type == 1) {
+                        if (o.type == 0) {
                             
                             listado += `<img src="./static/images/lightbulb.png" alt="" class="circle">`
                         } else {
