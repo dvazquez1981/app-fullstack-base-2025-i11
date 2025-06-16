@@ -3,14 +3,7 @@
 var PORT    = 3000;
 
 var express = require('express');
-
 var app     = express();
-//var utils   = require('./mysql-connector');
-
-//const { aw1db}=require('./bd/aw1db.js');
-
-
-
 
 
 
