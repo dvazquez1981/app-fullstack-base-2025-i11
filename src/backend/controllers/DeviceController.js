@@ -39,22 +39,22 @@ async function getOne(req, res) {
 }
 
 async function crearDevice(req, res) {
-  const { id, n, d,s,t } = req.body;
-  console.log("id:" + id + " name:" + n + " description:" + d + "state" + s + "type"+t);
+  const {  n, d,s,t } = req.body;
+  console.log("name:" + n + " description:" + d + "state" + s + "type"+t);
 
  
 
-  if (!(id && n && d && s && t)) {
-    console.log('Id, name, description, state y type son obligatorios');
+  if (!(n && d && s && t)) {
+    console.log('name, description, state y type son obligatorios');
     return res.status(400).json({
-      message: 'Id, name, description, state y type son obligatorios',
+      message: 'name, description, state y type son obligatorios',
       status: 0,
     });
   }
 
   try {
     const existingDevice = await Device.findOne({
-      where: { id: id }
+      where: { name: n }
     });
 
     if (existingDevice) {
@@ -66,7 +66,6 @@ async function crearDevice(req, res) {
     }
 
     const newDevice = await Device.create({
-      id: id,
       name: n,
       description: d,
       state:s,

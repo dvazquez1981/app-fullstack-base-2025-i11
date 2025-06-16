@@ -8,7 +8,8 @@ const Device =aw1db.define('devices',{
      id: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
+        autoIncrement: true 
       },
       name: {
         type: DataTypes.STRING(64),
@@ -19,7 +20,7 @@ const Device =aw1db.define('devices',{
         allowNull: false
       },
       state: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.FLOAT,
         allowNull: false
       },
       type: {
