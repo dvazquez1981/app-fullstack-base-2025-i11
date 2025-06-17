@@ -45,7 +45,8 @@ services:
             -                    mysql-server
         ports: 
             -                    "8000:3000"
-        command:                 nodemon /home/node/app/src/index.js
+        command: >
+                   sh -c "npm install --prefix /home/node/app/src && nodemon /home/node/app/src/index.js"
 
 networks:
     app-fullstack-net:
