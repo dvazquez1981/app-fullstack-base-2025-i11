@@ -40,7 +40,7 @@ async function getOne(req, res) {
 
 async function crearDevice(req, res) {
   const {  n, d,s,t } = req.body;
-  console.log("name:" + n + " description:" + d + "state" + s + "type"+t);
+  console.log("name: " + n + " description: " + d + " state: " + s + " type:"+t);
 
  
 
@@ -120,7 +120,7 @@ async function updateDevice(req, res) {
   const { id } = req.params;
   const  {n, d,s,t } = req.body;
 
-  console.log("id:" + id + " name:" + n + " description:" + d + "state" + s + "type"+t);
+  console.log("id: " + id + " name: " + n + " description: " + d + " state: " + s + " type:"+t);
 
 
   try {

@@ -17,7 +17,7 @@ const {
 const router = express.Router();
 
 // APIs
-router.get('/devices/', /*ensureToken, chequeoToken, chequeoGrupoUsuario('admin'),*/ getAll);
+router.get('/devices', /*ensureToken, chequeoToken, chequeoGrupoUsuario('admin'),*/ getAll);
 router.get('/devices/:id',/* sanitizeMiddlewareInput, ensureToken, chequeoToken, chequeoGrupoUsuario('admin'),*/ getOne);
 router.post('/devices', /*sanitizeMiddlewareInput*/ crearDevice);
 router.delete('/devices/:id', /*sanitizeMiddlewareInput,*/ deleteDevice);
