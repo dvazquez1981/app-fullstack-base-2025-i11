@@ -1,4 +1,7 @@
 const Device = require('../models/Device');
+
+const {sanitize}  = require('../utils/sanitize.js');
+
 //const { sanitize } = require('../utils/sanitize');
 
 async function getAll(req, res) {
@@ -6,7 +9,7 @@ async function getAll(req, res) {
     console.log('Obtengo todos los dispositivos');
     const dv = await Device.findAll();
     if (dv) {
-      res.status(200).json(dv);
+      res.status(200).json(sanitize(dv));
     }
   } catch (error) {
     console.error(error.message);
@@ -18,6 +21,15 @@ async function getOne(req, res) {
   const { id } = req.params;
   console.log("Get device id: " + id);
 
+if (!(id)) {
+    console.log('id es obligatorios');
+    return res.status(400).json({
+      message: 'id es obligatorio',
+      status: 0,
+    });
+  }
+
+
   try {
     const DeviceFound = await Device.findOne({
       where: { id: id }
@@ -25,7 +37,7 @@ async function getOne(req, res) {
 
     if (DeviceFound) {
       console.log("Se encontró");
-      res.status(200).json(DeviceFound);
+      res.status(200).json(sanitize(DeviceFound));
     } else {
       console.log("No se encontró");
       res.status(404).json({ message: 'No se encuentra el Device.' });
@@ -77,7 +89,7 @@ async function crearDevice(req, res) {
     return res.status(201).json({
       message: 'Device creado con éxito.',
       status: 1,
-      data: newDevice
+      data: sanitize(newDevice)
     });
 
   } catch (error) {
@@ -93,6 +105,15 @@ async function crearDevice(req, res) {
 async function deleteDevice(req, res) {
   const { id } = req.params;
   console.log("id: " + id + " para borrar");
+
+
+  if (!(id)) {
+    console.log('id es obligatorios');
+    return res.status(400).json({
+      message: 'id es obligatorios',
+      status: 0,
+    });
+  }
 
   try {
     const deletedRecord = await Device.destroy({
@@ -122,7 +143,13 @@ async function updateDevice(req, res) {
 
   console.log("id: " + id + " name: " + n + " description: " + d + " state: " + s + " type:"+t);
 
-
+if (!(id)) {
+    console.log('id es obligatorios');
+    return res.status(400).json({
+      message: 'id es obligatorios',
+      status: 0,
+    });
+  }
   try {
     const dv = await Device.findOne({
       where: { id: id },
