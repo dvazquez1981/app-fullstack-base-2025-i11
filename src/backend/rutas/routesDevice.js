@@ -1,4 +1,4 @@
-console.log('[routesDevice] cargando rutasDevice.js');
+//console.log('[routesDevice] cargando rutasDevice.js');
 
 const express = require('express');
 const {sanitizeMiddlewareInput}  = require('../utils/sanitize.js');

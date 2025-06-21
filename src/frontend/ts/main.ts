@@ -1,9 +1,11 @@
 
+declare const M: any;
+
 class Main implements EventListenerObject {
     
     handleEvent(event: Event): void {
-        const elemento = <HTMLElement>event.target;
-       if (elemento.id === "btnCrear" && event.type === "click") {
+         const elemento = <HTMLElement>event.target;
+        if (elemento.id === "btnCrear" && event.type === "click") {
          
           const name = (document.getElementById("name") as HTMLInputElement).value;
           const description = (document.getElementById("description") as HTMLInputElement).value;
@@ -11,10 +13,22 @@ class Main implements EventListenerObject {
           const state = parseInt((document.getElementById("state") as HTMLInputElement).value);   
           const nuevo = new Device(0, name, description, type, state);
           this.crearDispositivo(nuevo);
-          this.renderizarDevices();
-
+         
         }
-     
+
+        if (elemento.id === "btnGuardarCambios" && event.type === "click") {
+         
+            const id = parseInt((document.getElementById("btnGuardarCambios") as HTMLButtonElement).dataset.id!);
+            const name = (document.getElementById("editName") as HTMLInputElement).value;
+            const description = (document.getElementById("editDescription") as HTMLInputElement).value;
+            const type = parseInt((document.getElementById("editType") as HTMLSelectElement).value);
+            const state = parseInt((document.getElementById("editState") as HTMLInputElement).value);
+            this.actualizarDispositivo(id, name, description, type, state);
+            }
+         
+          
+  
+
     }
     private mostrarError(mensaje: string) {
        
@@ -60,15 +74,39 @@ class Main implements EventListenerObject {
         xhr.send();
     }
 
-    private actualizarDispositivo(id: number, name: string, description: string, type: number, state: number) {
+    private actualizarDispositivo(id: number, name: string, description: string, type: number, state: number) 
+        {
         const xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    this.renderizarDevices();
+                 } else {
+                    alert("Error al actualizar dispositivo: " + xhr.responseText);
+                }
+            }
+        };
         xhr.open('PATCH', `http://localhost:8000/devices/${id}`, true);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.send(JSON.stringify({name, description, type, state }));
+    
     }
 
-    private actualizarState(id: number, state: number) {
-        const xhr = new XMLHttpRequest();
+    private actualizarState(id: number, state: number)
+        
+        {
+            const xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        this.renderizarDevices();
+                     } else {
+                        alert("Error al actualizar dispositivo: " + xhr.responseText);
+                    }
+                }
+            };
+        
+        
         xhr.open('PATCH', `http://localhost:8000/devices/${id}`, true);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.send(JSON.stringify({ state }));
@@ -97,7 +135,9 @@ class Main implements EventListenerObject {
                             <a class="secondary-content" style="margin-right: 20px;">
                                 <button id="del_${o.id}" class="btn red btn-small">🗑</button>
                             </a>
-                        `;
+                            <button class="btn-small blue" id="edit_${o.id}">✏️ Editar</button>
+                                                 
+                            `;
                         listado += `</li>`;
                     }
 
@@ -126,6 +166,27 @@ class Main implements EventListenerObject {
                         });
                     }
 
+                    const modalInstance = M.Modal.getInstance(document.getElementById('modalEditar'));
+
+                    for (let o of devices) {
+                     document.getElementById(`edit_${o.id}`)?.addEventListener("click", () => {
+                     (document.getElementById("editName") as HTMLInputElement).value = o.name;
+                     (document.getElementById("editDescription") as HTMLInputElement).value = o.description;
+                     (document.getElementById("editType") as HTMLSelectElement).value = o.type.toString();
+                     (document.getElementById("editState") as HTMLInputElement).value = o.state.toString();
+
+                    //Refrescar los labels y selects
+                    M.updateTextFields();
+                    M.FormSelect.init(document.querySelectorAll('select'));
+
+                   //Guardar el ID para actualizar
+                    (document.getElementById("btnGuardarCambios") as HTMLButtonElement).dataset.id = o.id.toString();
+
+                    modalInstance.open();
+  });
+}
+
+
                 } else {
                     alert("falló la consulta");
                 }
@@ -139,12 +200,14 @@ class Main implements EventListenerObject {
 
 
 window.addEventListener("load", () => {
-    const main = new Main();
-
+     const main = new Main();
+     //boton de creacion
      const btnCrear = document.getElementById("btnCrear");
      btnCrear?.addEventListener("click", main); 
-      console.log("btnCrear encontrado:", btnCrear);
-
+     console.log("btnCrear encontrado:", btnCrear);
+    //boton de actualizacion con el modal
+     const btnGuardarCambios= document.getElementById("btnGuardarCambios");
+     btnGuardarCambios?.addEventListener("click",main);
      main.renderizarDevices();
 
     });

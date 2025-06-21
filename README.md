@@ -21,7 +21,7 @@ En esta imagen podés ver una posible implementación del cliente web que contro
 
 Esta sección es una guía con los pasos escenciales para que puedas poner en marcha la aplicación.
 
-<details><summary><b>Mira los pasos necesarios</b></summary><br>
+<details><summary><b>Mirar los pasos necesarios</b></summary><br>
 
 ### Instalar las dependencias
 
