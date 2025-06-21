@@ -90,7 +90,7 @@ async function crearDevice(req, res) {
     if (existingDevice) {
       console.log('El Device ya existe.');
       return res.status(409).json({
-        message: 'El Device ya existe. Elige un id distinto.',
+        message: 'El Device ya existe. Elige un name distinto.',
         status: 0,
       });
     }
@@ -169,7 +169,7 @@ if (!id) {
     });
   }
 
-if(state)
+if(state!== undefined)
 {
   const numeroState = parseInt(state);
   if(isNaN(numeroState) && !(0<=state && state<=100))
@@ -182,7 +182,7 @@ if(state)
   }
 }
 
-if(type)
+if(type!== undefined)
 {
 const numeroType = parseInt(type);
    
