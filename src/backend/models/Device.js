@@ -20,7 +20,7 @@ const Device =aw1db.define('devices',{
         allowNull: false
       },
       state: {
-        type: DataTypes.FLOAT,
+        type: DataTypes.INTEGER,
         allowNull: false
       },
       type: {
