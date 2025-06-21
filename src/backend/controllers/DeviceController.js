@@ -174,8 +174,8 @@ if(state)
   const numeroState = parseInt(state);
   if(isNaN(numeroState) && !(0<=state && state<=100))
   {
-    console.log('el valor de state tiene que ser un porcentaje entre 0 y 100');
-    return res.status(400).json({
+     console.log('el valor de state tiene que ser un porcentaje entre 0 y 100');
+     return res.status(400).json({
       message: 'el valor de state tiene que ser un porcentaje entre 0 y 100',
       status: 0,
     });
@@ -212,13 +212,14 @@ if(isNaN(numeroType) &&  !(0==numeroType || numeroType==1))
 
     await dv.update({
       id: id,
-      name: name || dv.name ,
-      description: description || dv.description ,
-      state: state || dv.state ,    
-      type:  type   || dv.type   
-    
+      name: name !== undefined ? name : dv.name,
+      description: description !== undefined ? description : dv.description,
+      state: state !== undefined ? state : dv.state,
+      type: type !== undefined ? type : dv.type
+
     });
 
+  
     console.log("id: " + id + " se actualizó correctamente");
     res.status(200).json({ message: 'Device se actualizó correctamente.' });
 

@@ -4,7 +4,8 @@ declare const M: any;
 class Main implements EventListenerObject {
     
     handleEvent(event: Event): void {
-         const elemento = <HTMLElement>event.target;
+        const elemento = <HTMLElement>event.target;
+        //manejo del boton crear-click
         if (elemento.id === "btnCrear" && event.type === "click") {
          
           const name = (document.getElementById("name") as HTMLInputElement).value;
@@ -12,10 +13,11 @@ class Main implements EventListenerObject {
           const type = parseInt((document.getElementById("type") as HTMLSelectElement).value);
           const state = parseInt((document.getElementById("state") as HTMLInputElement).value);   
           const nuevo = new Device(0, name, description, type, state);
+          //lo creo
           this.crearDispositivo(nuevo);
          
         }
-
+       //manejo el boton guarda cambios del modal 
         if (elemento.id === "btnGuardarCambios" && event.type === "click") {
          
             const id = parseInt((document.getElementById("btnGuardarCambios") as HTMLButtonElement).dataset.id!);
@@ -30,11 +32,12 @@ class Main implements EventListenerObject {
   
 
     }
+    //mostrar error
     private mostrarError(mensaje: string) {
        
         alert(`Error: ${mensaje}`);
     }
-
+    //crea dispositivo
     private crearDispositivo(device: Device) {
         const xhr = new XMLHttpRequest();
         xhr.onreadystatechange = () => {
@@ -53,8 +56,7 @@ class Main implements EventListenerObject {
                     this.mostrarError(xhr.responseText);
                 }
     
-                
-                
+                        
                 }
             }
         };
@@ -62,13 +64,30 @@ class Main implements EventListenerObject {
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.send(JSON.stringify(device));
     }
-
+    //borrar disposito
     private borrarDispositivo(id: number) {
         const xhr = new XMLHttpRequest();
         xhr.onreadystatechange = () => {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                this.renderizarDevices();
-            }
+            if (xhr.readyState === 4 )
+            { 
+                  if( xhr.status === 200) {
+                      this.renderizarDevices();
+                     } 
+                  else 
+                  {
+                    try {
+                        //parsear el texto de error JSON
+                        const errorResponse = JSON.parse(xhr.responseText);
+                        const errorMessage = errorResponse.message || JSON.stringify(errorResponse);
+                        this.mostrarError(errorMessage);
+                       } catch (e) {
+                        //Si no texto tal cual
+                        this.mostrarError(xhr.responseText);
+                      }
+        
+                }           
+             }
+
         };
         xhr.open("DELETE", `http://localhost:8000/devices/${id}`, true);
         xhr.send();
@@ -82,7 +101,16 @@ class Main implements EventListenerObject {
                 if (xhr.status === 200) {
                     this.renderizarDevices();
                  } else {
-                    alert("Error al actualizar dispositivo: " + xhr.responseText);
+                    try {
+                        //parsear el texto de error JSON
+                        const errorResponse = JSON.parse(xhr.responseText);
+                        const errorMessage = errorResponse.message || JSON.stringify(errorResponse);
+                        this.mostrarError(errorMessage);
+                    } catch (e) {
+                        //Si no texto tal cual
+                        this.mostrarError(xhr.responseText);
+                    }
+        
                 }
             }
         };
@@ -101,7 +129,15 @@ class Main implements EventListenerObject {
                     if (xhr.status === 200) {
                         this.renderizarDevices();
                      } else {
-                        alert("Error al actualizar dispositivo: " + xhr.responseText);
+                        try {
+                            //parsear el texto de error JSON
+                            const errorResponse = JSON.parse(xhr.responseText);
+                            const errorMessage = errorResponse.message || JSON.stringify(errorResponse);
+                            this.mostrarError(errorMessage);
+                        } catch (e) {
+                            //Si no texto tal cual
+                            this.mostrarError(xhr.responseText);
+                        }                
                     }
                 }
             };
@@ -144,20 +180,20 @@ class Main implements EventListenerObject {
                     div.innerHTML = listado;
 
                     for (let o of devices) {
-                        // Slider en tiempo real
+                        //Slider en tiempo real
                         const slider = document.getElementById("slider_" + o.id) as HTMLInputElement;
                         const spanValor = document.getElementById("valor_" + o.id);
                         slider?.addEventListener("input", () => {
                             if (spanValor) spanValor.textContent = slider.value;
                         });
 
-                        // Guardar cambio
+                        //Guardar cambio
                         slider?.addEventListener("change", () => {
                             const nuevo = parseInt(slider.value);
                             this.actualizarState(o.id, nuevo);
                         });
 
-                        // Botón borrar
+                        //Botón borrar
                         const boton = document.getElementById("del_" + o.id);
                         boton?.addEventListener("click", () => {
                             if (confirm("¿Eliminar este dispositivo?")) {
