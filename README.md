@@ -5,23 +5,16 @@
 # app-fullstack-base-2025-i11
 Web App Full Stack IoT usando Docker, Express, Sequelize, Materialize, Winston, MySQL y más.
 ## Aplicaciones Web 1
-
+### Entrega Final - Ing. Diego Vazquez
 
 ### Tecnologías principales
 Docker & Docker Compose – Para contenerizar la app, DB, compilador y admin.
-
 Node.js + Express – Backend REST con estructura de controladores y rutas.
-
 Sequelize – ORM para interactuar con MySQL.
-
 Winston – Sistema de logging avanzado (archivo + consola), con timestamps en zona horaria de BA.
-
 Morgan – Logging de peticiones HTTP.
-
 Materialize CSS – UI del frontend.
-
 TypeScript – Código frontend tipado compilado con Docker.
-
 MySQL 5.7 + PHPMyAdmin – Base de datos relacional.
 
 ### Estructura del proyecto
@@ -57,7 +50,7 @@ MySQL 5.7 + PHPMyAdmin – Base de datos relacional.
 
 ### Arquitectura de la aplicación
 
-Como ya pudiste ver, la aplicación se ejecuta sobre el ecosistema Docker, y en esta imagen podés ver el diagrama de arquitectura.
+La aplicación se ejecuta sobre el ecosistema Docker,  diagrama de arquitectura:
 
 ![architecture](doc/architecture.png)
 
@@ -161,7 +154,7 @@ En esta sección podés ver los detalles específicos de funcionamiento del cód
 En el frontend, cuando se carga la página o se actualiza la lista de dispositivos, se realiza una solicitud HTTP para obtener todos los dispositivos existentes desde el backend.
 
 En el backend se utiliza el método get al endpoint:
-'http://localhost:8000/devices'
+`http://localhost:8000/devices`
 
 ### Backend
 En el backend, se usa la función getAll ubicada en src/backend/controllers/DevicesController.js.
@@ -176,7 +169,7 @@ Proceso:
 - Se devuelve un JSON con código 200 OK y la lista de dispositivos.
 
 Ejemplo de respuesta exitosa:
-```sh
+```json
 [
   {
     "id": 1,
@@ -197,8 +190,7 @@ Ejemplo de respuesta exitosa:
 
 Errores posibles:
 
-# Caso 500 Internal Server Error: si falla la consulta a la base de datos.
-
+#### Caso 500 Internal Server Error: si falla la consulta a la base de datos.
 
 
 ## Obtener un dispositivo por ID (getOne)
@@ -232,20 +224,20 @@ respuesta exitosa:
 }
 ```
 Errores posibles:
-# Caso 400 Bad Request: si no se pasa el id.
+#### Caso 400 Bad Request: si no se pasa el id.
 ```json
 
 { "message": "id es obligatorio", "status": 0 }
 ```
 
 
-# Caso 404 Not Found: si no existe un dispositivo con ese id.
+#### Caso 404 Not Found: si no existe un dispositivo con ese id.
 
 ```json
 { "message": "No se encuentra el Device." }
 ```
 
-# Caso 500 Internal Server Error: error inesperado.
+#### Caso 500 Internal Server Error: error inesperado.
 ```json
 { "message": "Algo salió mal", "data": { "error": "detalle del error" } }
 
@@ -260,7 +252,7 @@ Los campos se validarar para que no esten vacios y ademas se comprobara si hay d
 
 ### Backend
 En el backend se utiliza el método POST al endpoint:
-http://localhost:8000/devices
+`http://localhost:8000/devices`
 
 con el header:
 Content-Type: application/json
@@ -292,7 +284,7 @@ Se envía en el body un JSON con los campos obligatorios:
 - state (integer): si type = 0, 0 o 1; si type = 1, un valor entre 0 y 100.
 
 
-### Caso que se haya creado con exito status 201
+#### Caso que se haya creado con exito status 201
 ```json
 {
     "method": "post",
@@ -315,7 +307,7 @@ Se envía en el body un JSON con los campos obligatorios:
     }
 }
 ``` 
-### Caso Bad Request (validación fallida) status 400
+#### Caso Bad Request (validación fallida) status 400
 ```json
 { "message": "state debe ser un porcentaje entre 0 y 100", "status": 0 }
 ```
@@ -328,12 +320,12 @@ Se envía en el body un JSON con los campos obligatorios:
 { "message": "name y description deben estar definidos",  "status": 0 }
 ```
 
-### Caso 409 Conflict (duplicado)
+#### Caso 409 Conflict (duplicado)
 ```json
 { "message": "El Device ya existe. Usa otro name.", "status": 0 }
 ```
 
-### Caso 500 Internal Server Error
+#### Caso 500 Internal Server Error
 ```json
 { "message": "Error interno.", "status": 0, "error": "Detalle del error" }
 ```
@@ -347,13 +339,13 @@ La actualizacion tambien puede ser solo de state,.
 
 se realiza un PATCH a:
 
-http://localhost:8000/devices/:id
+`http://localhost:8000/devices/:id`
 
 reemplazando :id por el identificador del dispositivo.
 
 ### Backend
-Se utiliza PUT al endpoint:
-http://localhost:8000/devices/:id
+Se utiliza PATCH al endpoint:
+`http://localhost:8000/devices/:id`
 con el header:
 Content-Type: application/json
 
@@ -389,7 +381,7 @@ Proceso de validación y actualización
 - name y description no vacíos.
 - Comprobación de existencia: verificar que el dispositivo con id exista.
 
-# Caso 200 OK
+#### Caso 200 OK
 ```json
 {
   "message": "Device actualizado con éxito.",
@@ -403,16 +395,16 @@ Proceso de validación y actualización
   }
 }
 ```
-# Caso 400 Bad Request (validación fallida)
+#### Caso 400 Bad Request (validación fallida)
 ```json
 { "message": "state debe ser un porcentaje entre 0 y 100", "status": 0 }
 ```
-# Caso 404 Not Found (no existe id)
+#### Caso 404 Not Found (no existe id)
 ```json
 { "message": "Device no encontrado.", "status": 0 }
 ```
 
-# Caso 500 Internal Server Error
+#### Caso 500 Internal Server Error
 ```json
 { "message": "Error interno.", "status": 0, "error": "Detalle del error" }
 ```
@@ -424,7 +416,7 @@ Proceso de validación y actualización
 
 En el listado de dispositivos, cada elemento tiene un botón “Eliminar”. Al confirmarlo, se envía:
 
-DELETE http://localhost:8000/devices/:id
+DELETE `http://localhost:8000/devices/:id`
 
 reemplazando :id por el identificador del dispositivo.
 
@@ -432,27 +424,25 @@ reemplazando :id por el identificador del dispositivo.
 
 Endpoint:
 
-DELETE http://localhost:8000/devices/:id
+DELETE `http://localhost:8000/devices/:id`
 
 Header:
 
 Content-Type: application/json
 
 
-# Caso 200 OK (eliminación exitosa):
+#### Caso 200 OK (eliminación exitosa):
 ```json
 { "message": "Device eliminado con éxito.", "status": 1 }
 ```
-# Caso 404 Not Found (no existe id):
+#### Caso 404 Not Found (no existe id):
 ```json
 { "message": "Device no encontrado.", "status": 0 }
 ```
-# caso 500 Internal Server Error:
+#### Caso 500 Internal Server Error:
 ```json
 { "message": "Error interno.", "status": 0, "error": "Detalle del error" }
 ```
-
-
 
 
 ### Frontend
@@ -461,64 +451,15 @@ Para actualizar un dispositivo en el front se puede, editar todos los campos del
 
 ### Backend
 
-
-
-
-
-409 Conflict (duplicado)
-
-{ "message": "El Device ya existe. Usa otro name.", "status": 0 }
-
-500 Internal Server Error
-
-{ "message": "Error interno.", "status": 0, "error": "Detalle del error" }
-
-
-
-
-
-Completá todos los detalles de funcionamiento sobre el backend, sus interacciones con el cliente web, la base de datos, etc.
-
-<details><summary><b>Ver los endpoints disponibles</b></summary><br>
-
-Completá todos los endpoints del backend con los metodos disponibles, los headers y body que recibe, lo que devuelve, ejemplos, etc.
-
-1) Devolver el estado de los dispositivos.
-
+#### Caso 409 Conflict (duplicado)
 ```json
-{
-    "method": "get",
-    "request_headers": "application/json",
-    "request_body": "",
-    "response_code": 200,
-    "request_body": {
-        "devices": [
-            {
-                "id": 1,
-                "status": true,
-                "description": "Kitchen light"
-            }
-        ]
-    },
-}
-``` 
+{ "message": "El Device ya existe. Usa otro name.", "status": 0 }
+```
+#### Caso 500 Internal Server Error
+```json
+{ "message": "Error interno.", "status": 0, "error": "Detalle del error" }
+```
 
-
-## Tecnologías utilizadas 🛠️
-
-En esta sección podés ver las tecnologías más importantes utilizadas.
-
-<details><summary><b>Mira la lista completa de tecnologías</b></summary><br>
-
-* [Docker](https://www.docker.com/) - Ecosistema que permite la ejecución de contenedores de software.
-* [Docker Compose](https://docs.docker.com/compose/) - Herramienta que permite administrar múltiples contenedores de Docker.
-* [Node JS](https://nodejs.org/es/) - Motor de ejecución de código JavaScript en backend.
-* [MySQL](https://www.mysql.com/) - Base de datos para consultar y almacenar datos.
-* [PHPMyAdmin](https://www.phpmyadmin.net/) - Administrador web de base de datos.
-* [Material Design](https://material.io/design) - Bibliotecas de estilo responsive para aplicaciones web.
-* [TypeScript](https://www.typescriptlang.org/) - Superset de JavaScript tipado y con clases.
-
-</details>
 
 ## Contribuir 🖇️
 
