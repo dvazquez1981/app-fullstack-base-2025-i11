@@ -9,12 +9,19 @@ Web App Full Stack IoT usando Docker, Express, Sequelize, Materialize, Winston, 
 
 ### Tecnologías principales
 Docker & Docker Compose – Para contenerizar la app, DB, compilador y admin.
+
 Node.js + Express – Backend REST con estructura de controladores y rutas.
+
 Sequelize – ORM para interactuar con MySQL.
+
 Winston – Sistema de logging avanzado (archivo + consola), con timestamps en zona horaria de BA.
+
 Morgan – Logging de peticiones HTTP.
+
 Materialize CSS – UI del frontend.
+
 TypeScript – Código frontend tipado compilado con Docker.
+
 MySQL 5.7 + PHPMyAdmin – Base de datos relacional.
 
 ### Estructura del proyecto
@@ -75,7 +82,6 @@ git clone https://github.com/dvazquez1981/app-fullstack-base-2025-i11.git
 
 ### Arrancá todo con Docker Compose:
 docker compose up 
-
 
 ### Estructura de la DB
 Al iniciar el servicio de la base de datos, si esta no está creada toma el archivo que se encuentra en `db/dumps/smart_home.sql` para crear la base de datos automáticamente.
