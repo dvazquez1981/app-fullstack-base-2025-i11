@@ -30,7 +30,7 @@ CREATE TABLE `Devices` (
   `id` int(11) NOT NULL,
   `name` varchar(64) NOT NULL,
   `description` varchar(128) NOT NULL,
-  `state` FLOAT CHECK (state >= 0 AND state <= 1),
+  `state` int(11) NOT NULL,
   `type` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -39,11 +39,11 @@ CREATE TABLE `Devices` (
 -- --------------------------------------------------------
 
 INSERT INTO `Devices` (`id`, `name`, `description`, `state`, `type`) VALUES
-(1, 'Lampara 1', 'Luz living', 1, 0),
+(1, 'Lampara 1', 'Luz living', 100, 0),
 (2, 'Lampara 2', 'Luz cocina', 0, 0),
-(3, 'Velador', 'Velador living', 1, 0),
-(4, 'Persiana 1', 'Persiana living', 1, 1),
-(5, 'Persiana 2', 'Persiana de la cocina', 1, 1),
+(3, 'Velador', 'Velador living', 100, 0),
+(4, 'Persiana 1', 'Persiana living', 100, 1),
+(5, 'Persiana 2', 'Persiana de la cocina', 100, 1),
 (6, 'Persiana 3', 'Persiana balcon', 0, 1);
 
 -- --------------------------------------------------------

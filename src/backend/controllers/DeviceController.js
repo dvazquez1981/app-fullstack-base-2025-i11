@@ -1,8 +1,5 @@
 const Device = require('../models/Device');
-
 const {sanitize}  = require('../utils/sanitize.js');
-
-//const { sanitize } = require('../utils/sanitize');
 
 async function getAll(req, res) {
   try {
@@ -51,22 +48,43 @@ if (!(id)) {
 }
 
 async function crearDevice(req, res) {
-  const {  n, d,s,t } = req.body;
-  console.log("name: " + n + " description: " + d + " state: " + s + " type:"+t);
+  const {  name, description ,state,type } = req.body;
+  console.log("name: " + name + " description: " + description + " state: " + state + " type:"+type);
 
- 
+   const numeroType = parseInt(type);
+   const numeroState = parseInt(state);
 
-  if (!(n && d && s && t)) {
-    console.log('name, description, state y type son obligatorios');
+  if(isNaN(numeroState) && !(0<=state && state<=100))
+  {
+    console.log('el valor de state tiene que ser un porcentaje entre 0 y 100');
     return res.status(400).json({
-      message: 'name, description, state y type son obligatorios',
+      message: 'el valor de state tiene que ser un porcentaje entre 0 y 100',
+      status: 0,
+    });
+  }
+  
+
+  if(isNaN(numeroType) &&  !(0==numeroType || numeroType==1))
+  {
+    console.log('el valor de type esta mal definido');
+    return res.status(400).json({
+    message: 'el valor de type esta mal definido',
+    status: 0,
+    });
+  }
+
+
+  if (!name || !description  ) {
+    console.log('name y description deben estar definidos');
+    return res.status(400).json({
+      message: 'name y description deben estar definidos',
       status: 0,
     });
   }
 
   try {
     const existingDevice = await Device.findOne({
-      where: { name: n }
+      where: { name: name }
     });
 
     if (existingDevice) {
@@ -78,10 +96,10 @@ async function crearDevice(req, res) {
     }
 
     const newDevice = await Device.create({
-      name: n,
-      description: d,
-      state:s,
-      type:t
+      name: name,
+      description: description,
+      state:numeroState,
+      type:numeroType
 
     });
 
@@ -139,17 +157,45 @@ async function deleteDevice(req, res) {
 
 async function updateDevice(req, res) {
   const { id } = req.params;
-  const  {n, d,s,t } = req.body;
+  const  {name, description,state,type } = req.body;
 
-  console.log("id: " + id + " name: " + n + " description: " + d + " state: " + s + " type:"+t);
+  console.log("id: " + id + " name: " + name + " description: " + description + " state: " + state + " type:"+type);
 
-if (!(id)) {
+if (!id) {
     console.log('id es obligatorios');
     return res.status(400).json({
       message: 'id es obligatorios',
       status: 0,
     });
   }
+
+if(state)
+{
+  const numeroState = parseInt(state);
+  if(isNaN(numeroState) && !(0<=state && state<=100))
+  {
+    console.log('el valor de state tiene que ser un porcentaje entre 0 y 100');
+    return res.status(400).json({
+      message: 'el valor de state tiene que ser un porcentaje entre 0 y 100',
+      status: 0,
+    });
+  }
+}
+
+if(type)
+{
+const numeroType = parseInt(type);
+   
+if(isNaN(numeroType) &&  !(0==numeroType || numeroType==1))
+  {
+    console.log('el valor de type esta mal definido');
+    return res.status(400).json({
+    message: 'el valor de type esta mal definido',
+    status: 0,
+    });
+  }
+}
+
   try {
     const dv = await Device.findOne({
       where: { id: id },
@@ -160,13 +206,16 @@ if (!(id)) {
       console.log("id: " + id + " no encontrado");
       return res.status(404).json({ message: 'Device no encontrado.' });
     }
+    
+
+
 
     await dv.update({
       id: id,
-      name: n || dv.name || null,
-      description: d || dv.description || null,
-      state: s   || dv.state || null,    
-      type: t   || dv.type|| null    
+      name: name || dv.name ,
+      description: description || dv.description ,
+      state: state || dv.state ,    
+      type:  type   || dv.type   
     
     });
 
