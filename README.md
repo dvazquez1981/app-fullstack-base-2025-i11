@@ -254,7 +254,7 @@ Errores posibles:
 ### Frontend
 
 Para agregar un dispostivo se ingresa los valores de name, descripcion, el tipo en un select de tipo lampara y ventana y ademas el estado que es un porcentaje de 0 a 100 con un paso de 25
-Los campos se validarar para que no esten vacios y ademas se comprobara si hay duplicado con respecto al campo name cuando pega en el endpoint del backend como explico posteriormente
+Los campos se validarar para que no esten vacios en el front y tambien en el controlador del backend ademas se comprobara si hay duplicado con respecto al campo name cuando pega en el endpoint del backend como explico posteriormente
 
 ### Backend
 En el backend se utiliza el método POST al endpoint:
@@ -341,7 +341,8 @@ Se envía en el body un JSON con los campos obligatorios:
 ### Frontend
 
 En el frontend, para actualizar un dispositivo, se muestran los campos existentes (name, description, type, state) en un formulario. El usuario puede modificar uno o varios valores y enviar la solicitud.
-La actualizacion tambien puede ser solo de state,.
+La actualizacion tambien puede ser solo de state. En esta instancia se validara en el caso que se modifique el state que este entre 0 y 100; Y el type que sea 0 o 1.
+Esta misma validacion se hara en el controlador del backend ademas de verificar que existe el id.
 
 se realiza un PATCH a:
 
