@@ -8,24 +8,66 @@ class Main implements EventListenerObject {
         //manejo del boton crear-click
         if (elemento.id === "btnCrear" && event.type === "click") {
          
-          const name = (document.getElementById("name") as HTMLInputElement).value;
+          const name = (document.getElementById("name") as HTMLInputElement).value.trim();
           const description = (document.getElementById("description") as HTMLInputElement).value;
           const type = parseInt((document.getElementById("type") as HTMLSelectElement).value);
           const state = parseInt((document.getElementById("state") as HTMLInputElement).value);   
           const nuevo = new Device(0, name, description, type, state);
+           
+          // Validaciones del lado del front
+          if (!name || !description) {
+            this.mostrarError("Los campos 'name' y 'description' son obligatorios.");
+            return;
+            }
+
+           if (!(type==0 || type==1)) {
+            this.mostrarError("El campo 'type' debe ser 0 (luz) o 1 (ventana).");
+            return;
+           }
+
+           if (isNaN(state) || state < 0 || state > 100 || state % 25 !== 0) {
+            this.mostrarError("El campo 'state' debe ser 0, 25, 50, 75 o 100.");
+            return;
+            } 
+
+  
+
           //lo creo
           this.crearDispositivo(nuevo);
          
         }
        //manejo el boton guarda cambios del modal 
-        if (elemento.id === "btnGuardarCambios" && event.type === "click") {
+        if (elemento.id === "btnGuardarCambios" && event.type === "click")
+         {
          
             const id = parseInt((document.getElementById("btnGuardarCambios") as HTMLButtonElement).dataset.id!);
             const name = (document.getElementById("editName") as HTMLInputElement).value;
             const description = (document.getElementById("editDescription") as HTMLInputElement).value;
             const type = parseInt((document.getElementById("editType") as HTMLSelectElement).value);
             const state = parseInt((document.getElementById("editState") as HTMLInputElement).value);
-            this.actualizarDispositivo(id, name, description, type, state);
+            
+             
+             if(state!== undefined)
+            {
+                if (state < 0 || state > 100 || state % 25 !== 0) {
+                    this.mostrarError("El campo 'state' debe ser 0, 25, 50, 75 o 100.");
+                    return;
+                    } 
+        
+            
+            }
+
+            if(type!== undefined)
+            {
+                if (!(type==0 || type==1)) {
+                    this.mostrarError("El campo 'type' debe ser 0 (luz) o 1 (ventana).");
+                    return;
+                   }
+            }             
+            
+                this.actualizarDispositivo(id, name, description, type, state);
+            
+        
             }
          
           
