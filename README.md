@@ -342,7 +342,7 @@ Se envía en el body un JSON con los campos obligatorios:
 
 En el frontend, para actualizar un dispositivo, se muestran los campos existentes (name, description, type, state) en un formulario. El usuario puede modificar uno o varios valores y enviar la solicitud.
 La actualizacion tambien puede ser solo de state. En esta instancia se validara en el caso que se modifique el state que este entre 0 y 100; Y el type que sea 0 o 1.
-Esta misma validacion se hara en el controlador del backend ademas de verificar que existe el id.
+Esta misma validacion se hará tanto en front, como en el controlador del backend ademas de verificar que existe el id.
 
 se realiza un PATCH a:
 
@@ -406,6 +406,11 @@ Proceso de validación y actualización
 ```json
 { "message": "state debe ser un porcentaje entre 0 y 100", "status": 0 }
 ```
+
+```json
+{ "message": "el valor de type esta mal definido", "status": 0 }
+```
+
 #### Caso 404 Not Found (no existe id)
 ```json
 { "message": "Device no encontrado.", "status": 0 }
@@ -415,6 +420,8 @@ Proceso de validación y actualización
 ```json
 { "message": "Error interno.", "status": 0, "error": "Detalle del error" }
 ```
+
+
 
 
 ## Eliminar un dispositivo
@@ -452,20 +459,6 @@ Content-Type: application/json
 ```
 
 
-### Frontend
-
-Para actualizar un dispositivo en el front se puede, editar todos los campos del device o solo modificar el state ya que se puede variar unicamente ese campo.
-
-### Backend
-
-#### Caso 409 Conflict (duplicado)
-```json
-{ "message": "El Device ya existe. Usa otro name.", "status": 0 }
-```
-#### Caso 500 Internal Server Error
-```json
-{ "message": "Error interno.", "status": 0, "error": "Detalle del error" }
-```
 
 
 ## Contribuir 🖇️
